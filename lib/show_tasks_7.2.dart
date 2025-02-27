@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 
-//ของ7.2
 class ShowTask extends StatefulWidget {
   const ShowTask({super.key});
 
@@ -15,6 +14,11 @@ class _ShowTaskState extends State<ShowTask> {
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController groupController = TextEditingController();
 
   @override
   void initState() {
@@ -32,13 +36,22 @@ class _ShowTaskState extends State<ShowTask> {
 
   void showForm(int? id) async {
     if (id != null) {
-      final existingTask =
-          _tasks.firstWhere((element) => element['id'] == id);
+      final existingTask = _tasks.firstWhere((element) => element['id'] == id);
       titleController.text = existingTask['title'];
       descriptionController.text = existingTask['description'];
+      firstnameController.text = existingTask['firstname'];
+      lastnameController.text = existingTask['lastname'];
+      emailController.text = existingTask['email'];
+      phoneController.text = existingTask['phone'];
+      groupController.text = existingTask['group'];
     } else {
       titleController.clear();
       descriptionController.clear();
+      firstnameController.clear();
+      lastnameController.clear();
+      emailController.clear();
+      phoneController.clear();
+      groupController.clear();
     }
 
     showModalBottomSheet(
@@ -65,6 +78,31 @@ class _ShowTaskState extends State<ShowTask> {
               controller: descriptionController,
               decoration: const InputDecoration(labelText: 'Description'),
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: firstnameController,
+              decoration: const InputDecoration(labelText: 'First Name'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: lastnameController,
+              decoration: const InputDecoration(labelText: 'Last Name'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: phoneController,
+              decoration: const InputDecoration(labelText: 'Phone'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: groupController,
+              decoration: const InputDecoration(labelText: 'Group'),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -75,6 +113,11 @@ class _ShowTaskState extends State<ShowTask> {
                 }
                 titleController.clear();
                 descriptionController.clear();
+                firstnameController.clear();
+                lastnameController.clear();
+                emailController.clear();
+                phoneController.clear();
+                groupController.clear();
                 Navigator.of(context).pop();
               },
               child: Text(id == null ? 'Create New' : 'Update'),
@@ -86,12 +129,29 @@ class _ShowTaskState extends State<ShowTask> {
   }
 
   Future<void> addTask() async {
-    await SqlHelper.insertTask(titleController.text, descriptionController.text);
+    await SqlHelper.insertTask(
+      titleController.text,
+      descriptionController.text,
+      firstnameController.text,
+      lastnameController.text,
+      emailController.text,
+      phoneController.text,
+      groupController.text,
+    );
     refreshTasks();
   }
 
   Future<void> updateTask(int id) async {
-    await SqlHelper.updateTask(id, titleController.text, descriptionController.text);
+    await SqlHelper.updateTask(
+      id,
+      titleController.text,
+      descriptionController.text,
+      firstnameController.text,
+      lastnameController.text,
+      emailController.text,
+      phoneController.text,
+      groupController.text,
+    );
     refreshTasks();
   }
 
@@ -156,8 +216,7 @@ class _ShowTaskState extends State<ShowTask> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
-                          onPressed: () =>
-                              confirmDelete(context, _tasks[index]['id']),
+                          onPressed: () => confirmDelete(context, _tasks[index]['id']),
                         ),
                       ],
                     ),
