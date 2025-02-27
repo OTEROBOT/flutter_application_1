@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sql_helper.dart';
 
-//ของ7.1
 class ShowTask extends StatefulWidget {
   const ShowTask({super.key});
 
@@ -86,12 +85,29 @@ class _ShowTaskState extends State<ShowTask> {
   }
 
   Future<void> addTask() async {
-    await SqlHelper.insertTask(titleController.text, descriptionController.text);
+    await SqlHelper.insertTask(
+      titleController.text,
+      descriptionController.text,
+      "0",                       // isCompleted (เป็น String)
+      "0",                       // priority (เป็น String)
+      "",                        // dueDate (ถ้าไม่มีใช้ String ว่าง)
+      DateTime.now().toString(), // createdAt
+      DateTime.now().toString()  // updatedAt
+    );
     refreshTasks();
   }
 
   Future<void> updateTask(int id) async {
-    await SqlHelper.updateTask(id, titleController.text, descriptionController.text);
+    await SqlHelper.updateTask(
+      id,
+      titleController.text,
+      descriptionController.text,
+      "0",                       // isCompleted (เป็น String)
+      "0",                       // priority (เป็น String)
+      "",                        // dueDate (ถ้าไม่มีใช้ String ว่าง)
+      DateTime.now().toString(), // createdAt
+      DateTime.now().toString()  // updatedAt
+    );
     refreshTasks();
   }
 
@@ -129,7 +145,7 @@ class _ShowTaskState extends State<ShowTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( // แก้จาก AppAppBar เป็น AppBar
         title: const Text('Task Management'),
       ),
       floatingActionButton: FloatingActionButton(
